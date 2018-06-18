@@ -1,4 +1,4 @@
-/* EasyAndee.h - Annikken Andee Library for Arduino
+/* EasyAndee101.h - Annikken Andee Library for Arduino
 Annikken Pte Ltd
 Author: Muhammad Hasif
 
