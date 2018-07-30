@@ -1,13 +1,13 @@
-/* EasyAndee101.h - Annikken Andee Library for Arduino
+/* EasyAndee101.cpp - Annikken Andee Library for Arduino
 Annikken Pte Ltd
 Author: Muhammad Hasif
 
 The Easy Andee Library is to allow users to use a feature similar to Arduino's Firmata to control their Arduino using their Bluetooth enabled phone. Users no longer need to code the UI and logic. With the Easy Andee feature on the Andee App, users can create their UI and immediately control their electronics.
 
-This library is free software. This library also uses parts of the Arduino Firmata Library */
+This library is free software */
 
 #include <CurieBLE.h>
-#include <EasyAndee.h>
+#include <EasyAndee101.h>
 #include <stdlib.h>
 
 #define MAXBUFFER 9
@@ -172,7 +172,7 @@ void processReceiveQueue()
 		
     if(processQueue[1] == 'D')//set digital out
     {
-		if(processQueue[2] < 111)//pin 0 to 13
+		/* if(processQueue[2] < 111)//pin 0 to 13
 		{
 			pinMode(processQueue[2] - 97,OUTPUT);
 			digitalWrite(processQueue[2] - 97,processQueue[3]-48);
@@ -209,7 +209,9 @@ void processReceiveQueue()
 				pinMode(A5,OUTPUT);
 				digitalWrite(A5,processQueue[3]-48);
 			}
-		}	  
+		}	   */
+		pinMode(processQueue[2] - 97,OUTPUT);
+		digitalWrite(processQueue[2] - 97,processQueue[3]-48);
     }
 	
     else if(processQueue[1] == 'E')//set digital in
@@ -223,8 +225,7 @@ void processReceiveQueue()
 		  {
 			  memcpy(sendQueue[k],processQueue,strlen(processQueue));
 			  break;
-		  }
-		  
+		  }		  
 	  }
     }
 	
@@ -302,7 +303,7 @@ void replyApp()
 	{
 		int digitalValue = 0;
 		
-		if(replyAppBuffer[2] < 111)
+		/* if(replyAppBuffer[2] < 111)
 		{
 			pinMode(replyAppBuffer[2] - 97,INPUT);
 			delay(1);
@@ -346,7 +347,12 @@ void replyApp()
 				delay(1);
 				digitalValue = digitalRead(A5);
 			}
-		}				
+		} */	
+			
+		pinMode(replyAppBuffer[2] - 97,INPUT);
+		delay(1);
+		digitalValue = digitalRead(replyAppBuffer[2] - 97);
+		
 		sprintf(send,"%c%c%c%c",replyAppBuffer[0],'F',replyAppBuffer[2],(digitalValue+48));
 		//printHEX("sendDigital",send);	
 		sendData(send);			
@@ -355,7 +361,7 @@ void replyApp()
 	{
 		int analogValue = 0;
 		
-		if(replyAppBuffer[2] == 'o')
+		/* if(replyAppBuffer[2] == 'o')
 		{
 			pinMode(A0,INPUT);
 			delay(1);
@@ -390,7 +396,14 @@ void replyApp()
 			pinMode(A5,INPUT);
 			delay(1);
 			analogValue = analogRead(A5);
+		} */
+		if(replyAppBuffer[2] >= 'o' || replyAppBuffer[2] <= 't')
+		{
+			pinMode(replyAppBuffer[2] - 97,INPUT);
+			delay(1);
+			analogValue = analogRead(replyAppBuffer[2] - 97);
 		}
+		
 		Serial.print(analogValue);
 		sprintf(send,"%c%c%c%04d",replyAppBuffer[0],'C',replyAppBuffer[2],analogValue);
 		//printHEX(" sendAnalog",send);
