@@ -11,7 +11,7 @@ Just load and upload to the Arduino 101. No editing of the sketch needed
 */
 
 #include <CurieBLE.h>
-#include <EasyAndee.h>
+#include <EasyAndee101.h>
 
 void setup() {
   // put your setup code here, to run once:
